@@ -15,6 +15,7 @@ const port = "3000";
 app.set("views", path.join(__dirname, "views"));
 app.engine("hbs", engine({ extname: ".hbs" }));
 app.set("view engine", "hbs");
+app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.use("/", router);
