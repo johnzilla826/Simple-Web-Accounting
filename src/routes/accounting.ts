@@ -1,8 +1,10 @@
 import { Router } from "express";
+import { query } from "../db/index.js";
 
 const router = Router();
 
-router.get("/pie", (req, res) => {
+router.get("/pie", async (req, res) => {
+  await query("SELECT * from users");
   res.send("Pie page");
 });
 
