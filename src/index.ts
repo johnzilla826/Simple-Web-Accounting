@@ -17,8 +17,8 @@ app.engine("hbs", engine({ extname: ".hbs" }));
 app.set("view engine", "hbs");
 app.use("/static", express.static(path.join(__dirname, "public")));
 
-app.use("/home", router);
-app.get("/", middleware);
+app.use("/", router);
+// app.get("/", middleware);
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);

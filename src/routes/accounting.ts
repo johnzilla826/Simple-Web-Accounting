@@ -3,9 +3,9 @@ import { query } from "../db/index.js";
 
 const router = Router();
 
-router.get("/pie", async (req, res) => {
-  await query("SELECT * from users");
-  res.send("Pie page");
+router.get("/accounts", async (req, res) => {
+  const { rows } = await query("SELECT * from account");
+  res.json(rows);
 });
 
 router.get("/apple", (req, res) => {
