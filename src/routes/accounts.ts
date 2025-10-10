@@ -6,7 +6,7 @@ const router = Router();
 // View accounts
 router.get("/view", async (req, res) => {
   try {
-    const { rows } = await query("SELECT * from account");
+    const { rows } = await query("SELECT * from accounts");
     res.render("accounts/viewAllAccounts", { rows });
   } catch (err) {
     console.error("Database error:", err);
@@ -19,7 +19,7 @@ router.get("/view/:number", async (req, res) => {
   const { number } = req.params;
 
   try {
-    const { rows } = await query("SELECT * FROM account WHERE number = $1", [
+    const { rows } = await query("SELECT * FROM accounts WHERE number = $1", [
       number,
     ]);
     const account = rows[0];
@@ -41,7 +41,7 @@ router.post("/create", async (req, res) => {
 
   try {
     await query(
-      "INSERT INTO account (name, number, type, description) VALUES ($1, $2, $3, $4)",
+      "INSERT INTO accounts (name, number, type, description) VALUES ($1, $2, $3, $4)",
       [name, number, type, description]
     );
     res.redirect("/accounts/view");
@@ -56,7 +56,7 @@ router.get("/edit/:number", async (req, res) => {
   const { number } = req.params;
 
   try {
-    const { rows } = await query("SELECT * FROM account WHERE number = $1", [
+    const { rows } = await query("SELECT * FROM accounts WHERE number = $1", [
       number,
     ]);
 
@@ -79,7 +79,7 @@ router.post("/edit", async (req, res) => {
 
   try {
     await query(
-      "UPDATE account SET name = $1, number = $2, type = $3, description = $4 WHERE id = $5",
+      "UPDATE accounts SET name = $1, number = $2, type = $3, description = $4 WHERE id = $5",
       [name, number, type, description, id]
     );
     res.redirect("/accounts/view");
@@ -93,7 +93,7 @@ router.post("/edit", async (req, res) => {
 router.post("/delete", async (req, res) => {
   const { id } = req.body;
   try {
-    await query("DELETE FROM account WHERE id = $1", [id]);
+    await query("DELETE FROM accounts WHERE id = $1", [id]);
     res.redirect("/accounts/view");
   } catch (err) {
     console.error("Database error:", err);
