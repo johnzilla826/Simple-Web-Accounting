@@ -30,13 +30,13 @@ router.get("/view/:number", async (req, res) => {
   }
 });
 
-// Create account GET
+// New account GET
 router.get("/new/", async (req, res) => {
   res.render("accounts/createAccountForm");
 });
 
-// Create account POST
-router.post("/create", async (req, res) => {
+// New account POST
+router.post("/new", async (req, res) => {
   const { name, number, type, description } = req.body;
 
   try {

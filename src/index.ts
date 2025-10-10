@@ -5,6 +5,7 @@ import path from "path";
 
 import { middleware } from "./middlewares.js";
 import { accountRouter } from "./routes/accounts.js";
+import { transactionRouter } from "./routes/transactions.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.use("/accounts", accountRouter);
+app.use("/transactions", transactionRouter);
 // app.get("/", middleware);
 
 app.listen(port, () => {
