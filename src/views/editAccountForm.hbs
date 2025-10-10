@@ -1,41 +1,46 @@
 <h2>Edit account {{account.account_number}} - {{account.account_name}}</h2>
-<form action="/accounts/edit" method="post">
-  <div class="mb-3">
+<div>
+  <form action="/accounts/edit" method="post">
+    <div class="mb-3">
+      <input type="hidden" name="id" value="{{account.account_id}}" />
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        value="{{account.account_name}}"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="number" class="form-label">Number</label>
+      <input
+        type="number"
+        class="form-control"
+        id="number"
+        name="number"
+        value="{{account.account_number}}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label">Type</label>
+      <input
+        type="text"
+        class="form-control"
+        id="type"
+        name="type"
+        value="{{account.account_type}}"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Edit</button>
+
+  </form>
+  <form action="/accounts/delete" method="post">
     <input type="hidden" name="id" value="{{account.account_id}}" />
-
-    <label for="name" class="form-label">Name</label>
-    <input
-      type="text"
-      class="form-control"
-      id="name"
-      name="name"
-      value="{{account.account_name}}"
-      required
-    />
-  </div>
-
-  <div class="mb-3">
-    <label for="number" class="form-label">Number</label>
-    <input
-      type="number"
-      class="form-control"
-      id="number"
-      name="number"
-      value="{{account.account_number}}"
-      required
-    />
-  </div>
-  <div class="mb-3">
-    <label for="type" class="form-label">Type</label>
-    <input
-      type="text"
-      class="form-control"
-      id="type"
-      name="type"
-      value="{{account.account_type}}"
-      required
-    />
-  </div>
-  <button type="submit" class="btn btn-primary">Submit Edit</button>
-
-</form>
+    <button type="submit" class="btn btn-primary">Delete Account</button>
+  </form>
+</div>

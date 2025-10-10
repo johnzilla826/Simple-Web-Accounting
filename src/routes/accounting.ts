@@ -61,6 +61,10 @@ router.get("/accounts/edit/:number", async (req, res) => {
       [number]
     );
 
+    if (rows.length === 0) {
+      return res.send("No account found.");
+    }
+
     const account = rows[0];
 
     res.render("editAccountForm", { account });
@@ -79,6 +83,18 @@ router.post("/accounts/edit", async (req, res) => {
       "UPDATE account SET account_name = $1, account_number = $2, account_type = $3 WHERE account_id = $4",
       [name, number, type, id]
     );
+    res.redirect("/accounts/view");
+  } catch (err) {
+    console.error("Database error:", err);
+    res.status(500);
+  }
+});
+
+// Delete account POST
+router.post("/accounts/delete", async (req, res) => {
+  const { id } = req.body;
+  try {
+    query("DELETE FROM account WHERE account_id = $1", [id]);
     res.redirect("/accounts/view");
   } catch (err) {
     console.error("Database error:", err);
