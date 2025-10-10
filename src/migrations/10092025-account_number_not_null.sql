@@ -1,2 +1,0 @@
-ALTER TABLE account
-ALTER COLUMN account_number SET NOT NULL;
