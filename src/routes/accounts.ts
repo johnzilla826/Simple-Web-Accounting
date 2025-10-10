@@ -7,14 +7,14 @@ const router = Router();
 router.get("/view", async (req, res) => {
   try {
     const { rows } = await query("SELECT * from account");
-    res.json(rows);
+    res.render("accounts/viewAllAccounts", { rows });
   } catch (err) {
     console.error("Database error:", err);
     res.status(500);
   }
 });
 
-// View individual account
+// View single account
 router.get("/view/:number", async (req, res) => {
   const { number } = req.params;
 
@@ -23,7 +23,8 @@ router.get("/view/:number", async (req, res) => {
       "SELECT * FROM account WHERE account_number = $1",
       [number]
     );
-    res.send(rows);
+    const account = rows[0];
+    res.render("accounts/viewSingleAccount", { account });
   } catch (err) {
     console.error("Database error:", err);
     res.status(500);
@@ -32,7 +33,7 @@ router.get("/view/:number", async (req, res) => {
 
 // Create account GET
 router.get("/new/", async (req, res) => {
-  res.render("createAccountForm");
+  res.render("accounts/createAccountForm");
 });
 
 // Create account POST
@@ -67,7 +68,7 @@ router.get("/edit/:number", async (req, res) => {
 
     const account = rows[0];
 
-    res.render("editAccountForm", { account });
+    res.render("accounts/editAccountForm", { account });
   } catch (err) {
     console.error("Database error:", err);
     res.status(500);
