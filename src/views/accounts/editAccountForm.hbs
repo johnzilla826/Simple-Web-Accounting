@@ -1,15 +1,15 @@
-<h2>Edit account {{account.account_number}} - {{account.account_name}}</h2>
+<h2>Edit account {{account.number}} - {{account.name}}</h2>
 <div>
   <form action="/accounts/edit" method="post">
     <div class="mb-3">
-      <input type="hidden" name="id" value="{{account.account_id}}" />
+      <input type="hidden" name="id" value="{{account.id}}" />
       <label for="name" class="form-label">Name</label>
       <input
         type="text"
         class="form-control"
         id="name"
         name="name"
-        value="{{account.account_name}}"
+        value="{{account.name}}"
         required
       />
     </div>
@@ -21,7 +21,7 @@
         class="form-control"
         id="number"
         name="number"
-        value="{{account.account_number}}"
+        value="{{account.number}}"
         required
       />
     </div>
@@ -32,7 +32,7 @@
         class="form-control"
         id="type"
         name="type"
-        value="{{account.account_type}}"
+        value="{{account.type}}"
         required
       />
     </div>
@@ -50,7 +50,7 @@
 
   </form>
   <form action="/accounts/delete" method="post">
-    <input type="hidden" name="id" value="{{account.account_id}}" />
+    <input type="hidden" name="id" value="{{account.id}}" />
     <button type="submit" class="btn btn-primary">Delete Account</button>
   </form>
 </div>

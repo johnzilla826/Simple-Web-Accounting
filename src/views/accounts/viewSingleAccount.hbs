@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h2 class="mb-3">{{account.account_name}}</h2>
+  <h2 class="mb-3">{{account.name}}</h2>
   <table class="table">
     <thead class="">
       <tr>
@@ -11,13 +11,13 @@
     </thead>
     <tbody>
       <tr>
-        <td>{{account.account_id}}</td>
-        <td>{{account.account_name}}</td>
-        <td>{{account.account_number}}</td>
-        <td>{{account.account_type}}</td>
+        <td>{{account.id}}</td>
+        <td>{{account.name}}</td>
+        <td>{{account.number}}</td>
+        <td>{{account.type}}</td>
       </tr>
     </tbody>
   </table>
   <p><b>Description</b>: {{account.description}}</p>
-  <a href="/accounts/edit/{{account.account_number}}">Edit Account</a>
+  <a href="/accounts/edit/{{account.number}}">Edit Account</a>
 </div>

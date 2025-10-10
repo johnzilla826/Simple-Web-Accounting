@@ -19,10 +19,9 @@ router.get("/view/:number", async (req, res) => {
   const { number } = req.params;
 
   try {
-    const { rows } = await query(
-      "SELECT * FROM account WHERE account_number = $1",
-      [number]
-    );
+    const { rows } = await query("SELECT * FROM account WHERE number = $1", [
+      number,
+    ]);
     const account = rows[0];
     res.render("accounts/viewSingleAccount", { account });
   } catch (err) {
@@ -42,7 +41,7 @@ router.post("/create", async (req, res) => {
 
   try {
     await query(
-      "INSERT INTO account (account_name, account_number, account_type, description) VALUES ($1, $2, $3, $4)",
+      "INSERT INTO account (name, number, type, description) VALUES ($1, $2, $3, $4)",
       [name, number, type, description]
     );
     res.redirect("/accounts/view");
@@ -57,10 +56,9 @@ router.get("/edit/:number", async (req, res) => {
   const { number } = req.params;
 
   try {
-    const { rows } = await query(
-      "SELECT * FROM account WHERE account_number = $1",
-      [number]
-    );
+    const { rows } = await query("SELECT * FROM account WHERE number = $1", [
+      number,
+    ]);
 
     if (rows.length === 0) {
       return res.send("No account found.");
@@ -81,7 +79,7 @@ router.post("/edit", async (req, res) => {
 
   try {
     await query(
-      "UPDATE account SET account_name = $1, account_number = $2, account_type = $3, description = $4 WHERE account_id = $5",
+      "UPDATE account SET name = $1, number = $2, type = $3, description = $4 WHERE id = $5",
       [name, number, type, description, id]
     );
     res.redirect("/accounts/view");
@@ -95,7 +93,7 @@ router.post("/edit", async (req, res) => {
 router.post("/delete", async (req, res) => {
   const { id } = req.body;
   try {
-    await query("DELETE FROM account WHERE account_id = $1", [id]);
+    await query("DELETE FROM account WHERE id = $1", [id]);
     res.redirect("/accounts/view");
   } catch (err) {
     console.error("Database error:", err);
