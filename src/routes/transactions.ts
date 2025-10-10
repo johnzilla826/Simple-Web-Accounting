@@ -9,11 +9,96 @@ router.get("/new", async (req, res) => {
 });
 
 router.post("/new", async (req, res) => {
-  res.send(req.body);
-});
+  const accounts = req.body.account;
+  const debits = req.body.debit;
+  const credits = req.body.credit;
 
-router.post("/splits/new", async (req, res) => {
-  res.send(req.body);
+  // Basic input validation (keep it simple)
+  if (
+    !Array.isArray(accounts) ||
+    !Array.isArray(debits) ||
+    !Array.isArray(credits)
+  ) {
+    return res
+      .status(400)
+      .json({ error: "account, debit and credit must be arrays." });
+  }
+  if (
+    !(accounts.length === debits.length && accounts.length === credits.length)
+  ) {
+    return res
+      .status(400)
+      .json({
+        error: "Array lengths of account, debit and credit must match.",
+      });
+  }
+
+  const transactions = [];
+
+  for (let i = 0; i < accounts.length; i++) {
+    transactions.push({
+      account: accounts[i],
+      debit: parseFloat(debits[i]) || 0,
+      credit: parseFloat(credits[i]) || 0,
+    });
+  }
+
+  // Optional quick balance check (recommended)
+  const totalDebits = transactions.reduce((s, t) => s + t.debit, 0);
+  const totalCredits = transactions.reduce((s, t) => s + t.credit, 0);
+  if (Math.abs(totalDebits - totalCredits) > 1e-9) {
+    return res.status(400).json({
+      error: "Unbalanced journal entry: total debits must equal total credits.",
+      totalDebits,
+      totalCredits,
+    });
+  }
+
+  // Inserting transaction & splits in a DB transaction
+  try {
+    await query("BEGIN");
+
+    const { rows } = await query(
+      "INSERT INTO transactions (date, memo) VALUES ($1, $2) RETURNING id",
+      [req.body.date, req.body.memo]
+    );
+    const insertedId = rows[0].id;
+
+    for (const tran of transactions) {
+      // find account id
+      const acctRes = await query("SELECT id FROM accounts WHERE name = $1", [
+        tran.account,
+      ]);
+      if (!acctRes.rows || acctRes.rows.length === 0) {
+        // unknown account -> rollback and respond 400
+        await query("ROLLBACK");
+        return res
+          .status(400)
+          .json({ error: `Unknown account: ${tran.account}` });
+      }
+      const accountId = acctRes.rows[0].id;
+
+      // insert split
+      await query(
+        "INSERT INTO splits (transaction_id, account_id, debit, credit) VALUES ($1, $2, $3, $4)",
+        [insertedId, accountId, tran.debit, tran.credit]
+      );
+    }
+
+    await query("COMMIT");
+    return res
+      .status(201)
+      .json({ success: true, transactionId: insertedId, splits: transactions });
+  } catch (err) {
+    // Attempt rollback on any error and return a single 500
+    try {
+      await query("ROLLBACK");
+    } catch (rbErr) {
+      console.error("Rollback failed:", rbErr);
+    }
+    console.error("Database error:", err);
+    return res.status(500).json({ error: "Failed to create journal entry." });
+  }
 });
 
 export { router as transactionRouter };

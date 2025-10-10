@@ -1,5 +1,6 @@
 import express from "express";
 import { engine } from "express-handlebars";
+import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import path from "path";
 
@@ -18,6 +19,7 @@ app.engine("hbs", engine({ extname: ".hbs" }));
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(path.join(__dirname, "public")));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/accounts", accountRouter);
 app.use("/transactions", transactionRouter);

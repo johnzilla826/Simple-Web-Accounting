@@ -1,5 +1,6 @@
 <h2>Create a new transaction</h2>
 <form action="/transactions/new" method="post">
+
   <div class="mb-3">
     <label for="date" class="form-label">Date</label>
     <input type="date" class="form-control" id="date" name="date" required />
@@ -8,10 +9,7 @@
     <label for="memo" class="form-label">Memo</label>
     <input type="text" class="form-control" id="memo" name="memo" />
   </div>
-  <button type="submit" class="btn btn-primary">Create Account</button>
-</form>
 
-<form action="/transactions/splits/new" method="post">
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -26,18 +24,21 @@
             name="account[]"
             class="form-control"
             placeholder="Cash"
+            required
           /></td>
         <td><input
             name="debit[]"
             class="form-control"
             type="number"
             step="0.01"
+            required
           /></td>
         <td><input
             name="credit[]"
             class="form-control"
             type="number"
             step="0.01"
+            required
           /></td>
       </tr>
       <tr>
@@ -45,18 +46,21 @@
             name="account[]"
             class="form-control"
             placeholder="Supplies"
+            required
           /></td>
         <td><input
             name="debit[]"
             class="form-control"
             type="number"
             step="0.01"
+            required
           /></td>
         <td><input
             name="credit[]"
             class="form-control"
             type="number"
             step="0.01"
+            required
           /></td>
       </tr>
     </tbody>
