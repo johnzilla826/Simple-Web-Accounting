@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import path from "path";
 
 import { middleware } from "./middlewares.js";
-import { router } from "./routes/accounting.js";
+import { accountRouter } from "./routes/accounts.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +18,7 @@ app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
-app.use("/", router);
+app.use("/accounts", accountRouter);
 // app.get("/", middleware);
 
 app.listen(port, () => {

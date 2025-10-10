@@ -4,7 +4,7 @@ import { query } from "../db/index.js";
 const router = Router();
 
 // View accounts
-router.get("/accounts/view", async (req, res) => {
+router.get("/view", async (req, res) => {
   try {
     const { rows } = await query("SELECT * from account");
     res.json(rows);
@@ -15,7 +15,7 @@ router.get("/accounts/view", async (req, res) => {
 });
 
 // View individual account
-router.get("/accounts/view/:number", async (req, res) => {
+router.get("/view/:number", async (req, res) => {
   const { number } = req.params;
 
   try {
@@ -31,12 +31,12 @@ router.get("/accounts/view/:number", async (req, res) => {
 });
 
 // Create account GET
-router.get("/accounts/new/", async (req, res) => {
+router.get("/new/", async (req, res) => {
   res.render("createAccountForm");
 });
 
 // Create account POST
-router.post("/accounts/create", async (req, res) => {
+router.post("/create", async (req, res) => {
   const { name, number, type, description } = req.body;
 
   try {
@@ -52,7 +52,7 @@ router.post("/accounts/create", async (req, res) => {
 });
 
 // Edit account GET
-router.get("/accounts/edit/:number", async (req, res) => {
+router.get("/edit/:number", async (req, res) => {
   const { number } = req.params;
 
   try {
@@ -75,7 +75,7 @@ router.get("/accounts/edit/:number", async (req, res) => {
 });
 
 // Edit account POST
-router.post("/accounts/edit", async (req, res) => {
+router.post("/edit", async (req, res) => {
   const { id, name, number, type, description } = req.body;
 
   try {
@@ -91,7 +91,7 @@ router.post("/accounts/edit", async (req, res) => {
 });
 
 // Delete account POST
-router.post("/accounts/delete", async (req, res) => {
+router.post("/delete", async (req, res) => {
   const { id } = req.body;
   try {
     query("DELETE FROM account WHERE account_id = $1", [id]);
@@ -102,4 +102,4 @@ router.post("/accounts/delete", async (req, res) => {
   }
 });
 
-export { router };
+export { router as accountRouter };
