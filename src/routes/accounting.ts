@@ -37,12 +37,12 @@ router.get("/accounts/new/", async (req, res) => {
 
 // Create account POST
 router.post("/accounts/create", async (req, res) => {
-  const { name, number, type } = req.body;
+  const { name, number, type, description } = req.body;
 
   try {
     await query(
-      "INSERT INTO account (account_name, account_number, account_type) VALUES ($1, $2, $3)",
-      [name, number, type]
+      "INSERT INTO account (account_name, account_number, account_type, description) VALUES ($1, $2, $3, $4)",
+      [name, number, type, description]
     );
     res.redirect("/accounts/view");
   } catch (err) {
@@ -76,12 +76,12 @@ router.get("/accounts/edit/:number", async (req, res) => {
 
 // Edit account POST
 router.post("/accounts/edit", async (req, res) => {
-  const { id, name, number, type } = req.body;
+  const { id, name, number, type, description } = req.body;
 
   try {
     query(
-      "UPDATE account SET account_name = $1, account_number = $2, account_type = $3 WHERE account_id = $4",
-      [name, number, type, id]
+      "UPDATE account SET account_name = $1, account_number = $2, account_type = $3, description = $4 WHERE account_id = $5",
+      [name, number, type, description, id]
     );
     res.redirect("/accounts/view");
   } catch (err) {
