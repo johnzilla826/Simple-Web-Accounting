@@ -80,7 +80,7 @@ router.post("/edit", async (req, res) => {
   const { id, name, number, type, description } = req.body;
 
   try {
-    query(
+    await query(
       "UPDATE account SET account_name = $1, account_number = $2, account_type = $3, description = $4 WHERE account_id = $5",
       [name, number, type, description, id]
     );
@@ -95,7 +95,7 @@ router.post("/edit", async (req, res) => {
 router.post("/delete", async (req, res) => {
   const { id } = req.body;
   try {
-    query("DELETE FROM account WHERE account_id = $1", [id]);
+    await query("DELETE FROM account WHERE account_id = $1", [id]);
     res.redirect("/accounts/view");
   } catch (err) {
     console.error("Database error:", err);
