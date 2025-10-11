@@ -3,6 +3,33 @@ import { query } from "../db/index.js";
 
 const router = Router();
 
+// View all transactions
+router.get("/view", async (req, res) => {
+  try {
+    const { rows } = await query("SELECT * FROM transactions");
+    res.render("transactions/viewAllTransactions", { rows });
+  } catch (err) {
+    console.error("Database error:", err);
+    res.status(500).json({ error: "Could not find any transactions" });
+  }
+});
+
+// View single transaction
+router.get("/view/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const { rows } = await query("SELECT * FROM transactions WHERE id = $1", [
+      id,
+    ]);
+    const transaction = rows[0];
+    res.render("transactions/viewSingleTransaction", { transaction });
+  } catch (err) {
+    console.error("Database error:", err);
+    res.status(500).json({ error: "Could not find any transactions" });
+  }
+});
+
 // New transaction GET
 router.get("/new", async (req, res) => {
   res.render("transactions/createTransactionForm");
@@ -26,11 +53,9 @@ router.post("/new", async (req, res) => {
   if (
     !(accounts.length === debits.length && accounts.length === credits.length)
   ) {
-    return res
-      .status(400)
-      .json({
-        error: "Array lengths of account, debit and credit must match.",
-      });
+    return res.status(400).json({
+      error: "Array lengths of account, debit and credit must match.",
+    });
   }
 
   const transactions = [];
@@ -86,9 +111,7 @@ router.post("/new", async (req, res) => {
     }
 
     await query("COMMIT");
-    return res
-      .status(201)
-      .json({ success: true, transactionId: insertedId, splits: transactions });
+    return res.status(201).redirect("/transactions/view");
   } catch (err) {
     // Attempt rollback on any error and return a single 500
     try {

@@ -1,0 +1,20 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Transaction ID: {{transaction.id}}</h2>
+  <table class="table">
+    <thead class="">
+      <tr>
+        <th>Transaction ID</th>
+        <th>Date</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{transaction.id}}</td>
+        <td>{{transaction.date}}</td>
+        <td>{{transaction.memo}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <a href="/transactions/edit/{{transaction.id}}">Edit Transaction</a>
+</div>

@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Transactions</h2>
+  <a href="/transactions/new">Create a new transaction</a>
+  <table class="table">
+    <thead class="">
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Memo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each rows}}
+        <tr>
+          <td>{{id}}</td>
+          <td><a href="/transactions/view/{{id}}">{{date}}</a></td>
+          <td>{{memo}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
