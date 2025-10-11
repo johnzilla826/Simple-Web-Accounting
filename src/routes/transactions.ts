@@ -19,16 +19,27 @@ router.get("/view/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const { rows } = await query("SELECT * FROM transactions WHERE id = $1", [
-      id,
-    ]);
-    const transaction = rows[0];
-    res.render("transactions/viewSingleTransaction", { transaction });
+    const { rows: transactionRows } = await query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [id]
+    );
+
+    const { rows: split } = await query(
+      "SELECT s.id, s.transaction_id, s.account_id, a.name, a.number, s.debit, s.credit FROM splits s JOIN accounts a ON s.account_id = a.id WHERE s.transaction_id = $1",
+      [id]
+    );
+
+    const transaction = transactionRows[0];
+    // render split info will go here
+    res.render("transactions/viewSingleTransaction", { transaction, split });
   } catch (err) {
     console.error("Database error:", err);
     res.status(500).json({ error: "Could not find any transactions" });
   }
 });
+
+// Edit transaction GET
+// Edit transaction POST
 
 // New transaction GET
 router.get("/new", async (req, res) => {
